@@ -1,0 +1,43 @@
+;; -*- mode: beancount; coding: utf-8; fill-column: 400; -*-
+option "title" "My Personal Ledger"
+option "operating_currency" "CNY"
+
+2007-02-01 open Assets:Invest:AAA AA "FIFO"
+2007-02-01 open Assets:Cash CNY
+2007-02-01 open Income:Net CNY
+; Open directive
+2024-01-01 open Assets:Bank:Checking USD
+2024-01-01 open Income:Salary
+
+; Transaction directive
+2024-01-15 * "Salary for January"
+  Income:Salary                          -2000 USD
+  Assets:Bank:Checking                    2000 USD
+
+; Note directive
+2024-01-20 note Assets:Bank:Checking "Received tax refund"
+
+; Event directive
+2024-01-25 event "bonus_announced" "Annual bonus will be paid in February"
+
+; Balance directive
+2024-01-31 balance Assets:Bank:Checking   2000 USD
+
+; Close directive
+2024-12-31 close Income:Salary
+
+
+
+2007-08-01 * "buy"
+  time: "10:30"
+  Assets:Invest:AAA                         10 AA {1 CNY}
+  Assets:Cash                              -10 CNY
+
+2007-08-02 * "buy"
+  Assets:Invest:AAA                         10 AA {2 CNY}
+  Assets:Cash                              -20 CNY
+  
+2007-08-03 * "sold"
+  Assets:Invest:AAA                        -10 AA {} @3 CNY
+  Income:Net                               -20 CNY
+  Assets:Cash                               30 CNY
