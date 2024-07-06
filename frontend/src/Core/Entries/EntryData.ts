@@ -40,6 +40,12 @@ export interface NoteData extends BaseEntryData {
   comment: string;
 }
 
+export interface PriceData extends BaseEntryData {
+  type: 'Price';
+  currency: string;
+  amount: AmountData;
+}
+
 export interface EventData extends BaseEntryData {
   type: 'Event';
   eventType: string;
@@ -52,5 +58,5 @@ export interface BalanceData extends BaseEntryData {
   amount: AmountData;
 }
 
-export type EntryData = OpenData | CloseData | TransactionData | EventData | NoteData | BalanceData;
+export type EntryData = OpenData | CloseData | TransactionData | EventData | NoteData | BalanceData | PriceData;
 export type EntryType = EntryData['type'];

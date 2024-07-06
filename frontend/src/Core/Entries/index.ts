@@ -5,4 +5,5 @@ export * from './Commodity';
 export * from './EntryData';
 export * from './Open';
 export * from './Posting';
+export * from './Price';
 export * from './Transaction';

@@ -15,7 +15,13 @@ export class Account {
 
   createDate: Dayjs;
 
+  closedDate?: Dayjs;
+
   meta?: Record<string, string>;
+
+  get closed() {
+    return !!this.closedDate;
+  }
 
   constructor(options: AccountOptions) {
     this.fullName = options.fullName;
@@ -30,5 +36,9 @@ export class Account {
       createDate: open.date,
       ...open,
     });
+  }
+
+  close(date: Dayjs) {
+    this.closedDate = date;
   }
 }

@@ -1,6 +1,6 @@
-import { EntryData, EntryType, Open, Transaction } from '../Entries';
+import { EntryData, EntryType, Open, Price, Transaction } from '../Entries';
 
-export type Entry = Transaction | Open;
+export type Entry = Transaction | Open | Price;
 
 type EntryFactory = new (entryData: EntryData) => Entry;
 
@@ -15,7 +15,7 @@ export class EntryManager {
     return this.factoryMap[entryType];
   }
 
-  entries: Entry[] = [];
+  private entries: Entry[] = [];
 
   constructor(entriesData: EntryData[]) {
     const entries: Entry[] = [];
@@ -29,7 +29,12 @@ export class EntryManager {
     });
     this.entries = entries;
   }
+
+  getAllEntries() {
+    return this.entries;
+  }
 }
 
 EntryManager.register('Transaction', Transaction as EntryFactory);
+EntryManager.register('Price', Price as EntryFactory);
 EntryManager.register('Open', Open as EntryFactory);

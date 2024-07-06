@@ -1,10 +1,10 @@
-import { Open } from '../Entries';
+import { Account } from '../Entries';
 
 export class AccountManager {
-  accountMap = new Map<string, Open>();
+  accountMap = new Map<string, Account>();
 
-  add(openDirective: Open) {
-    this.accountMap.set(openDirective.account, openDirective);
+  add(account: Account) {
+    this.accountMap.set(account.fullName, account);
   }
 
   get(name: string) {

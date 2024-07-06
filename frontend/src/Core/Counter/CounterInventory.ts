@@ -6,14 +6,18 @@ export class CounterInventory {
 
   postings: Posting[] = [];
 
-  get balances() {
-    const balanceMap: Record<string, string> = {};
-    for (const key of this.counterMap.keys()) {
-      const currency = this.getCurrencyInKey(key);
-      const value = this.counterMap.get(key) as string;
-      balanceMap[currency] = balanceMap[currency] ? CounterUtil.add(balanceMap[currency], value) : value;
-    }
-    return balanceMap;
+  atUnits() {
+    return this.reduce((units) => units);
+  }
+
+  atCosts() {
+    return this.reduce((units, cost) => {
+      if (!cost) return units;
+      return new Amount({
+        currency: cost.currency,
+        number: CounterUtil.multiple(cost.number ?? '0', units.number ?? '0'),
+      });
+    });
   }
 
   addPosting(posting: Posting) {
@@ -28,11 +32,26 @@ export class CounterInventory {
     this.counterMap.set(key, added);
   }
 
+  reduce(reducer: (units: Amount, cost: Amount | undefined) => Amount) {
+    const resultMap: Record</** currency */ string, /** value */ string> = {};
+    for (const key of this.counterMap.keys()) {
+      const { currency, cost } = this.parseKey(key);
+      const value = this.counterMap.get(key) as string;
+      const reducedAmount = reducer(new Amount({ currency, number: value }), cost);
+      resultMap[reducedAmount.currency] = resultMap[reducedAmount.currency]
+        ? CounterUtil.add(resultMap[reducedAmount.currency], reducedAmount.number)
+        : reducedAmount.number;
+    }
+    return resultMap;
+  }
+
   private getKey(currency: string, cost?: Amount) {
     return cost ? `${currency}/${cost.number}/${cost.currency}` : currency;
   }
 
-  private getCurrencyInKey(key: string) {
-    return key.split('/')[0];
+  private parseKey(key: string) {
+    const [currency, costNumber, costCurrency] = key.split('/');
+    const cost = costNumber && costCurrency ? new Amount({ currency: costCurrency, number: costNumber }) : undefined;
+    return { currency, cost };
   }
 }
