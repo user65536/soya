@@ -32,6 +32,10 @@ export class CounterInventory {
     this.counterMap.set(key, added);
   }
 
+  addInventory(inventory: CounterInventory) {
+    inventory.postings.forEach((posting) => this.addPosting(posting));
+  }
+
   reduce(reducer: (units: Amount, cost: Amount | undefined) => Amount) {
     const resultMap: Record</** currency */ string, /** value */ string> = {};
     for (const key of this.counterMap.keys()) {
@@ -43,6 +47,13 @@ export class CounterInventory {
         : reducedAmount.number;
     }
     return resultMap;
+  }
+
+  clone() {
+    const clonedInventory = new CounterInventory();
+    clonedInventory.postings = this.postings;
+    clonedInventory.counterMap = this.counterMap;
+    return clonedInventory;
   }
 
   private getKey(currency: string, cost?: Amount) {

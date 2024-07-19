@@ -1,4 +1,4 @@
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { Price } from '../Entries';
 import { BinaryArray } from '../Util/BinaryArray';
 
@@ -14,7 +14,7 @@ export class PriceManager {
     prices.insert(price);
   }
 
-  getLatestPrice(currency: string, now: Dayjs) {
+  getLatestPrice(currency: string, now: Dayjs = dayjs(Date.now())) {
     const index = now.unix();
     const prices = this.priceMap.get(currency);
     if (!prices) return null;

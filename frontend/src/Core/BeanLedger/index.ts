@@ -1,3 +1,4 @@
 export * from './AccountManager';
 export * from './EntryManager';
-export * from './SoyaLedger';
+export * from './BeanLedger';
+export * from './AccountTree';

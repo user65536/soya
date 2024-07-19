@@ -4,7 +4,7 @@ import { BeanOptions } from './BeanOptions';
 import { EntryManager } from './EntryManager';
 import { PriceManager } from './PriceManager';
 
-export class SoyaLedger {
+export class BeanLedger {
   accountManager = new AccountManager();
 
   priceManager = new PriceManager();
@@ -19,7 +19,7 @@ export class SoyaLedger {
     this.init();
   }
 
-  init() {
+  private init() {
     const entries = this.entryManager.getAllEntries();
     entries.forEach((entry) => {
       if (entry.type === 'Open') {
